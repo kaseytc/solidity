@@ -83,7 +83,7 @@ Language Features:
  * General: Support ``pop()`` for storage arrays.
  * General: Scoping rules now follow the C99-style.
  * General: Allow ``enum``s in interfaces.
- * General: Allow ``mapping`` storage pointers as arguments and return values in all internal functions.
+ * General: Allow ``mapping`` storage pointers as arguments and return values in all internal functions and all library functions.
  * General: Allow ``struct``s in interfaces.
  * General: Provide access to the ABI decoder through ``abi.decode(bytes memory data, (...))``.
  * General: Disallow zero length for fixed-size arrays.

@@ -1205,6 +1205,7 @@ public:
 	{
 		return _inLibrary ? shared_from_this() : TypePointer();
 	}
+	virtual unsigned calldataEncodedSize(bool) const override { return 32; }
 	virtual bool dataStoredIn(DataLocation _location) const override { return _location == DataLocation::Storage; }
 	/// Cannot be stored in memory, but just in case.
 	virtual bool hasSimpleZeroValueInMemory() const override { solAssert(false, ""); }
