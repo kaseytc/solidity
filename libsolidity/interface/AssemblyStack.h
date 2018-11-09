@@ -22,7 +22,7 @@
 #pragma once
 
 #include <libsolcommon/ErrorReporter.h>
-#include <libsolidity/interface/EVMVersion.h>
+#include <libsolcommon/EVMVersion.h>
 
 #include <libevmasm/LinkerObject.h>
 

@@ -23,7 +23,7 @@
 
 #include <test/Common.h>
 
-#include <libsolidity/interface/EVMVersion.h>
+#include <libsolcommon/EVMVersion.h>
 #include <libsolcommon/Exceptions.h>
 
 #include <boost/test/framework.hpp>

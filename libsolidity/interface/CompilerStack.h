@@ -25,7 +25,7 @@
 
 #include <libsolcommon/ErrorReporter.h>
 #include <libsolidity/interface/ReadFile.h>
-#include <libsolidity/interface/EVMVersion.h>
+#include <libsolcommon/EVMVersion.h>
 
 #include <libsolcommon/SourceLocation.h>
 #include <libevmasm/LinkerObject.h>

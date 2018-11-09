@@ -21,7 +21,7 @@
 #pragma once
 
 #include <libsolcommon/Exceptions.h>
-#include <libsolidity/interface/EVMVersion.h>
+#include <libsolcommon/EVMVersion.h>
 
 #include <libsolidity/inlineasm/AsmScope.h>
 
