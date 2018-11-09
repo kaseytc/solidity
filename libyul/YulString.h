@@ -38,7 +38,7 @@ public:
 	struct Handle
 	{
 		size_t id;
-		size_t hash;
+		std::uint64_t hash;
 	};
 	YulStringRepository():
 		m_strings{std::make_shared<std::string>()},
@@ -53,7 +53,7 @@ public:
 	{
 		if (_string.empty())
 			return { 0, emptyHash() };
-		size_t h = hash(_string);
+		std::uint64_t h = hash(_string);
 		auto range = m_hashToID.equal_range(h);
 		for (auto it = range.first; it != range.second; ++it)
 			if (*m_strings[it->second] == _string)
@@ -65,10 +65,10 @@ public:
 	}
 	std::string const& idToString(size_t _id) const	{ return *m_strings.at(_id); }
 
-	static size_t hash(std::string const& v)
+	static std::uint64_t hash(std::string const& v)
 	{
 		// FNV hash - can be replaced by a better one, e.g. xxhash64
-		std::size_t hash = 14695981039346656037u;
+		std::uint64_t hash = 14695981039346656037u;
 		for(std::string::const_iterator it = v.begin(), end = v.end(); it != end; ++it)
 		{
 			hash *= 1099511628211u;
@@ -77,10 +77,10 @@ public:
 
 		return hash;
 	}
-	static constexpr size_t emptyHash()	{ return 14695981039346656037u; }
+	static constexpr std::uint64_t emptyHash()	{ return 14695981039346656037u; }
 private:
 	std::vector<std::shared_ptr<std::string>> m_strings;
-	std::unordered_multimap<size_t, size_t> m_hashToID;
+	std::unordered_multimap<std::uint64_t, size_t> m_hashToID;
 };
 
 class YulString
