@@ -99,34 +99,5 @@ private:
 	std::string m_typeName;
 };
 
-
-using errorSourceLocationInfo = std::pair<std::string, SourceLocation>;
-
-class SecondarySourceLocation
-{
-public:
-	SecondarySourceLocation& append(std::string const& _errMsg, SourceLocation const& _sourceLocation)
-	{
-		infos.push_back(std::make_pair(_errMsg, _sourceLocation));
-		return *this;
-	}
-	/// Limits the number of secondary source locations to 32 and appends a notice to the
-	/// error message.
-	void limitSize(std::string& _message)
-	{
-		size_t occurrences = infos.size();
-		if (occurrences > 32)
-		{
-			infos.resize(32);
-			_message += " Truncated from " + std::to_string(occurrences) + " to the first 32 occurrences.";
-		}
-	}
-
-	std::vector<errorSourceLocationInfo> infos;
-};
-
-using errinfo_sourceLocation = boost::error_info<struct tag_sourceLocation, SourceLocation>;
-using errinfo_secondarySourceLocation = boost::error_info<struct tag_secondarySourceLocation, SecondarySourceLocation>;
-
 }
 }
