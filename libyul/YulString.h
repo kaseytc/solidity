@@ -22,7 +22,7 @@
 
 #include <boost/noncopyable.hpp>
 
-#include <map>
+#include <unordered_map>
 #include <memory>
 #include <vector>
 #include <string>
@@ -35,14 +35,15 @@ namespace yul
 class YulStringRepository: boost::noncopyable
 {
 public:
-	struct Handle {
+	struct Handle
+	{
 		size_t id;
 		size_t hash;
 	};
-	YulStringRepository(): m_strings{std::make_pair(zeroHash(), std::make_shared<std::string>())}
-	{
-		m_handles[std::string{}] = Handle { 0, zeroHash() };
-	}
+	YulStringRepository():
+		m_strings{std::make_shared<std::string>()},
+		m_hashToID{std::make_pair(emptyHash(), 0)}
+	{}
 	static YulStringRepository& instance()
 	{
 		static YulStringRepository inst;
@@ -51,23 +52,21 @@ public:
 	Handle stringToHandle(std::string const& _string)
 	{
 		if (_string.empty())
-			return { 0, m_strings[0].first };
-		// TODO: This should be a hash table lookup using hash(_string) as hash.
-		Handle& handle = m_handles[_string];
-		if (handle.id == 0)
-		{
-			handle.hash = hash(_string);
-			m_strings.emplace_back(std::make_pair(handle.hash, std::make_shared<std::string>(_string)));
-			handle.id = m_strings.size() - 1;
-		}
-		return handle;
+			return { 0, emptyHash() };
+		size_t h = hash(_string);
+		auto range = m_hashToID.equal_range(h);
+		for (auto it = range.first; it != range.second; ++it)
+			if (*m_strings[it->second] == _string)
+				return Handle{it->second, h};
+		m_strings.emplace_back(std::make_shared<std::string>(_string));
+		size_t id = m_strings.size() - 1;
+		m_hashToID.emplace_hint(range.second, std::make_pair(h, id));
+		return Handle{id, h};
 	}
-	std::string const& idToString(size_t _id) const
-	{
-		return *m_strings.at(_id).second;
-	}
+	std::string const& idToString(size_t _id) const	{ return *m_strings.at(_id); }
 
-	static size_t hash(std::string const& v) {
+	static size_t hash(std::string const& v)
+	{
 		// FNV hash - can be replaced by a better one, e.g. xxhash64
 		std::size_t hash = 14695981039346656037u;
 		for(std::string::const_iterator it = v.begin(), end = v.end(); it != end; ++it)
@@ -78,13 +77,10 @@ public:
 
 		return hash;
 	}
-	static size_t zeroHash() {
-		static size_t zeroHashValue = hash("");
-		return zeroHashValue;
-	}
+	static constexpr size_t emptyHash()	{ return 14695981039346656037u; }
 private:
-	std::vector<std::pair<size_t, std::shared_ptr<std::string>>> m_strings;
-	std::map<std::string, Handle> m_handles;
+	std::vector<std::shared_ptr<std::string>> m_strings;
+	std::unordered_multimap<size_t, size_t> m_hashToID;
 };
 
 class YulString
@@ -116,7 +112,7 @@ public:
 
 private:
 	/// ID of the string. Assumes that the empty string has ID zero.
-	YulStringRepository::Handle m_handle { 0, YulStringRepository::zeroHash() };
+	YulStringRepository::Handle m_handle { 0, YulStringRepository::emptyHash() };
 };
 
 }
