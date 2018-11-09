@@ -20,7 +20,7 @@
 
 #pragma once
 
-#include <libsolidity/interface/Exceptions.h>
+#include <libsolcommon/Exceptions.h>
 #include <libsolidity/interface/EVMVersion.h>
 
 #include <libsolidity/inlineasm/AsmScope.h>

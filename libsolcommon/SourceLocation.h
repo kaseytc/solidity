@@ -22,11 +22,11 @@
 
 #pragma once
 
+#include <libdevcore/Common.h> // defines noexcept macro for MSVC
 #include <memory>
 #include <string>
 #include <ostream>
 #include <tuple>
-#include <libdevcore/Common.h> // defines noexcept macro for MSVC
 
 namespace dev
 {

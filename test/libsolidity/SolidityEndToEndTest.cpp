@@ -25,7 +25,7 @@
 
 #include <test/Options.h>
 
-#include <libsolidity/interface/Exceptions.h>
+#include <libsolcommon/Exceptions.h>
 #include <libsolidity/interface/EVMVersion.h>
 
 #include <libevmasm/Assembly.h>
